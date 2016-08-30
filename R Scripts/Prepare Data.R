@@ -1,6 +1,9 @@
 #Run fantasy football analysis files in order
 
 ###DON'T FORGET TO MANUALLY DOWNLOAD AVG COST FROM YAHOO
+#set WD:
+
+setwd("~/Projects/External/ffanal/FantasyFootballAnalyticsR")
 
 ###############
 # Functions
@@ -13,7 +16,7 @@ source(paste(getwd(),"/R Scripts/Functions/League Settings.R", sep=""))
 # Rankings
 ###############
 
-source(paste(getwd(),"/R Scripts/Rankings/IDP.R", sep=""), echo=TRUE)
+#source(paste(getwd(),"/R Scripts/Rankings/IDP.R", sep=""), echo=TRUE)
 source(paste(getwd(),"/R Scripts/Rankings/Kickers.R", sep=""), echo=TRUE)
 
 ###############

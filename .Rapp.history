@@ -1,0 +1,3 @@
+ls
+source("/Users/jhf1/Projects/External/ffanal/FantasyFootballAnalyticsR/main.R")
+source("/Users/jhf1/Projects/External/ffanal/FantasyFootballAnalyticsR/R Scripts/Prepare Data.R")

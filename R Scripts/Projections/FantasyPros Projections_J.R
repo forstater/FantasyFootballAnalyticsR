@@ -68,7 +68,7 @@ projections_fp <- adply(projections_fp, 1, function(x) {
     x$name_fp <- str_sub(x$player_fp, end=str_locate(string=x$player_fp, '\\(')[,1]-2)
   }
   x
-}
+}         
 )
 
 #Name for merging
