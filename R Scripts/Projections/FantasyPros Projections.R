@@ -85,19 +85,23 @@ if(length(which(projections_fp$name_fp == "")) > 0){
   projections_fp <- projections_fp[-which(projections_fp$name_fp == ""),]
 }
 
+# here --------------------------------------------------------------------
+# projections_fpbk<-projections_fp
+projections_fp<-projections_fpbk
+
 #Remove duplicate cases
 projections_fp[projections_fp$name %in% projections_fp[duplicated(projections_fp$name),"name"],]
 
 #Same name, different player
-projections_fp <- projections_fp[-which(projections_fp$name=="ALEXSMITH" & projections_fp$team_fp=="CIN"),]
-projections_fp <- projections_fp[-which(projections_fp$name=="RYANGRIFFIN" & projections_fp$team_fp=="HOU"),]
+# projections_fp <- projections_fp[-which(projections_fp$name=="ALEXSMITH" & projections_fp$team_fp=="CIN")]
+# projections_fp <- projections_fp[-which(projections_fp$name=="RYANGRIFFIN" & projections_fp$team_fp=="HOU")]
 
 #Same player, different position
 dropNames <- c("DEXTERMCCLUSTER","DENARDROBINSON","JAMESCASEY","CORYHARKEY","RYANHEWITT","NILESPAUL")
 dropVariables <- c("pos","pos","pos","pos","pos","pos")
 dropLabels <- c("WR","RB","RB","RB","RB","TE")
 
-projections_fp2 <- ddply(projections_fp, .(name), numcolwise(mean), na.rm=TRUE)
+# projections_fp2 <- ddply(projections_fp, .(name), numcolwise(mean), na.rm=TRUE)
 
 for(i in 1:length(dropNames)){
   if(dim(projections_fp[-which(projections_fp[,"name"] == dropNames[i] & projections_fp[,dropVariables[i]] == dropLabels[i]),])[1] > 0){
@@ -105,25 +109,25 @@ for(i in 1:length(dropNames)){
   }
 }
 
-projections_fp <- merge(projections_fp2, projections_fp[,c("name","name_fp","player_fp","pos","team_fp")], by="name")
+# projections_fp <- merge(projections_fp2, projections_fp[,c("name","name_fp","player_fp","pos","team_fp")], by="name")
 
 #Rename Players
 if(length(projections_fp[projections_fp$name == "CHRISTOPHERIVORY", "name"]) > 0){projections_fp[projections_fp$name == "CHRISTOPHERIVORY", "name"] <- "CHRISIVORY"}
 if(length(projections_fp[projections_fp$name == "DOMANIQUEDAVIS", "name"]) > 0){projections_fp[projections_fp$name == "DOMANIQUEDAVIS", "name"] <- "DOMINIQUEDAVIS"}
 
 #Calculate overall rank
-projections_fp$overallRank_fp <- rank(-projections_fp$pts_fp, ties.method="min")
+projections_fp$overallRank_fp <- rank(projections_fp$pts_fp, ties.method="min")
 
 #Calculate Position Rank
 projections_fp$positionRank_fp <- NA
-projections_fp[which(projections_fp$pos == "QB"), "positionRank_fp"] <- rank(-projections_fp[which(projections_fp$pos == "QB"), "pts_fp"], ties.method="min")
-projections_fp[which(projections_fp$pos == "RB"), "positionRank_fp"] <- rank(-projections_fp[which(projections_fp$pos == "RB"), "pts_fp"], ties.method="min")
-projections_fp[which(projections_fp$pos == "WR"), "positionRank_fp"] <- rank(-projections_fp[which(projections_fp$pos == "WR"), "pts_fp"], ties.method="min")
-projections_fp[which(projections_fp$pos == "TE"), "positionRank_fp"] <- rank(-projections_fp[which(projections_fp$pos == "TE"), "pts_fp"], ties.method="min")
-projections_fp[which(projections_fp$pos == "K"), "positionRank_fp"] <- rank(-projections_fp[which(projections_fp$pos == "K"), "pts_fp"], ties.method="min")
+projections_fp[which(projections_fp$pos == "QB"), "positionRank_fp"] <- rank(projections_fp[which(projections_fp$pos == "QB"), "pts_fp"], ties.method="min")
+projections_fp[which(projections_fp$pos == "RB"), "positionRank_fp"] <- rank(projections_fp[which(projections_fp$pos == "RB"), "pts_fp"], ties.method="min")
+projections_fp[which(projections_fp$pos == "WR"), "positionRank_fp"] <- rank(projections_fp[which(projections_fp$pos == "WR"), "pts_fp"], ties.method="min")
+projections_fp[which(projections_fp$pos == "TE"), "positionRank_fp"] <- rank(projections_fp[which(projections_fp$pos == "TE"), "pts_fp"], ties.method="min")
+projections_fp[which(projections_fp$pos == "K"), "positionRank_fp"] <- rank(projections_fp[which(projections_fp$pos == "K"), "pts_fp"], ties.method="min")
 
 #Order variables in data set
-projections_fp <- projections_fp[,c(prefix, paste(varNames, suffix, sep="_"))]
+projections_fp <- projections_fp[c(prefix, paste(varNames, suffix, sep="_")),]
 
 #Order players by overall rank
 projections_fp <- projections_fp[order(projections_fp$overallRank_fp),]

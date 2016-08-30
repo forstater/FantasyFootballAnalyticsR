@@ -8,9 +8,17 @@
 ###########################
 
 #Specify Maximum Risk
+
+# If problem run here: ----------------------------------------------------
+
+library(ffanalytics)
+
+# Setup -------------------------------------------------------------------
+
+
 maxRisk <- 4.3
 
-#Library
+
 library("Rglpk")
 
 #Functions
@@ -38,6 +46,9 @@ draftData
 #Day of Draft
 removedPlayers <-  draftData[rowSums(is.na(draftData[,c("points","simulation","risk","inflatedCost"), with=FALSE])) == 0,]
 
+# Example -----------------------------------------------------------------
+
+
 ### RUN TO HERE ###
 
 #Example: Update with drafted (i.e., unavailable) players
@@ -55,6 +66,9 @@ optimizeDraft(maxRisk=4.3, omit=c("Adrian Peterson","Eric Decker"))
 optimizeDraft(maxRisk=4.3, omit=drafted)
 
 draftData[!(draftData$name %in% drafted),]
+
+# DASHBOARD ---------------------------------------------------------------
+
 
 ###################
 ### Draft Dashboard
@@ -146,15 +160,15 @@ draftData[!(player %in% drafted) & risk >= 6 & !is.na(points) & draftData$pos ==
 kickers[!(player %in% drafted),]
 
 ### Defensive Players ###
-
-#D
-IDP[!(player %in% drafted),]
-
-#DL
-IDP[!(player %in% drafted) & (pos=="DE" | pos=="DT"),]
-
-#DB
-IDP[!(player %in% drafted) & (pos=="S" | pos=="CB"),]
-
-#DB
-IDP[!(player %in% drafted) & pos=="LB",]
+#
+# #D
+# IDP[!(player %in% drafted),]
+#
+# #DL
+# IDP[!(player %in% drafted) & (pos=="DE" | pos=="DT"),]
+#
+# #DB
+# IDP[!(player %in% drafted) & (pos=="S" | pos=="CB"),]
+#
+# #DB
+# IDP[!(player %in% drafted) & pos=="LB",]

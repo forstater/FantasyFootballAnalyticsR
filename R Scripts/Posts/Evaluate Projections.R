@@ -11,7 +11,7 @@
 #####################
 # UPDATE
 #####################
-year <- 2014 #can only scrape Yahoo data from past 2 years (2012 or 2013), but can load data from other years if already scraped & saved
+year <- 2016 #can only scrape Yahoo data from past 2 years (2012 or 2013), but can load data from other years if already scraped & saved
 yahooLeagueID <- 39345
 pagesToGrab <- 15
 
@@ -55,7 +55,7 @@ actualPoints[,c("passYds","passTds","passInt","rushAtt","rushYds","rushTds","rec
   apply(actualPoints[,c("passYds","passTds","passInt","rushAtt","rushYds","rushTds","recTgts","rec","recYds","recTds","returnTDs","twoPts","fumbles","pts")], 2, function(x) gsub("\\,", "", x))
 
 #Convert variables from character strings to numeric
-actualPoints[,c("passYds","passTds","passInt","rushAtt","rushYds","rushTds","recTgts","rec","recYds","recTds","returnTDs","twoPts","fumbles","pts")] <- 
+actualPoints[,c("passYds","passTds","passInt","rushAtt","rushYds","rushTds","recTgts","rec","recYds","recTds","returnTDs","twoPts","fumbles","pts")] <-
   convert.magic(actualPoints[,c("passYds","passTds","passInt","rushAtt","rushYds","rushTds","recTgts","rec","recYds","recTds","returnTDs","twoPts","fumbles","pts")], "numeric")
 
 #Player name, position, and team

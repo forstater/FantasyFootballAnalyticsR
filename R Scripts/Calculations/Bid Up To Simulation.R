@@ -20,7 +20,7 @@ source(paste(getwd(),"/R Scripts/Functions/League Settings.R", sep=""))
 load(paste(getwd(),"/Data/simulation.RData", sep=""))
 
 #Set iterations
-iterations <- 1000
+iterations <- 10000
 
 #Roster Optimization
 optimizeData <- na.omit(projections[sourceName == "averageRobust", c("name","player","pos","team","points","risk","inflatedCost","sdPts"), with=FALSE])
@@ -42,15 +42,15 @@ pb <- txtProgressBar(min = 0, max = length(optimizeData$name), style = 3)
 for(i in 1:length(optimizeData$name)){
   setTxtProgressBar(pb, i)
   listOfPlayers <- rep(optimizeData$player[i], numTotalStarters)
-  newCost <- optimizeData$inflatedCost    
-  
+  newCost <- optimizeData$inflatedCost
+
   for (k in 1:iterations){
     j <- 1
     listOfPlayers <- optimizeData$player[i]
-    
+
     while(!is.na(match(optimizeData$player[i], listOfPlayers)) & j < maxCost){
       newCost[i] <- j
-      
+
       listOfPlayers <- optimizeTeam(points=simulatedPoints[,k], playerCost=newCost, maxRisk=(max(optimizeData$risk)+1))$players
       bidUpTo[i,k] <- j - 1
       j <- j+1
@@ -64,8 +64,8 @@ bidUpTo[bidUpTo == (maxCost)] <- NA
 
 #Calculate Robust Measure of Central Tendency: Hodges-Lehmann estimator (pseudo-median)
 #optimizeData$bidUpTo <- rowMeans(bidUpTo)
-for (i in 1:dim(bidUpTo)[1]){ 
-  error <- try(suppressWarnings(wilcox.test(bidUpTo[i,], conf.int=TRUE)$estimate), silent=T) 
+for (i in 1:dim(bidUpTo)[1]){
+  error <- try(suppressWarnings(wilcox.test(bidUpTo[i,], conf.int=TRUE)$estimate), silent=T)
   ifelse(is(error,"try-error"), optimizeData$bidUpToSim[i] <- max(ceiling(mean(bidUpTo[i,], na.rm=TRUE)), 1, na.rm=TRUE), optimizeData$bidUpToSim[i] <- ceiling(suppressWarnings(wilcox.test(bidUpTo[i,], conf.int=TRUE)$estimate)))
 }
 
