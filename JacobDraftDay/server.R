@@ -1,33 +1,17 @@
 library(shiny)
 risk5=optimizeDraft(maxRisk = 5.0, omit = drafted)$playerInfo
-# data_sets <- c("mtcars", "morley", "rock")
 data_sets <- c("risk5")
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output,session) {
+ 
+   # Get the data set with the appropriate name
+
+  dataIn <- data_sets
+  colnames <- names(dataIn)
+
+  updateSelectizeInput(session, 'foo', choices = draftData$player, server = TRUE)
   
-  # Drop-down selection box for which data set
-  # Drop-down selection box for which data set
-  output$choose_dataset <- renderUI({
-    selectInput("dataset", "Data set", as.list(data_sets))
-  })
-  
-  # Check boxes
-  output$choose_columns <- renderUI({
-    # If missing input, return to avoid error later in function
-    if(is.null(input$dataset))
-      return()
-    
-    # Get the data set with the appropriate name
-    dat <- get(input$dataset)
-    colnames <- names(dat)
-    
-    # Create the checkboxes and select them all by default
-    checkboxGroupInput("columns", "Choose columns", 
-                       choices  = colnames,
-                       selected = colnames)
-  })
-  
-  # Output the data
+# Output the data
   output$data_table <- renderTable({
     # If missing input, return to avoid error later in function
     if(is.null(input$dataset))
@@ -35,7 +19,9 @@ shinyServer(function(input, output) {
     
     # Get the data set
     dat <- get(input$dataset)
-    
+    riskTeam5 = optimizeDraft(maxRisk = 5.0, omit = drafted)$playerInfo
+    output$mytable1 <- DT::renderDataTable({
+        DT::datatable(riskTeam5[, input$show_vars, drop = FALSE])})
     # Make sure columns are correct for data set (when data set changes, the
     # columns will initially be for the previous data set)
     if (is.null(input$columns) || !(input$columns %in% names(dat)))

@@ -6,11 +6,9 @@ shinyUI(pageWithSidebar(
   headerPanel(""),
   
   sidebarPanel(
-    uiOutput("choose_dataset"),
-    
-    uiOutput("choose_columns"),
-    br(),
-    a(href = "https://gist.github.com/4211337", "Source code")
+    selectizeInput('foo',label="test",choices=NULL, multiple=TRUE),
+    uiOutput("choose_columns")
+
   ),
   
   
