@@ -64,7 +64,9 @@ write.csv(
 options(digits = 2)
 draftData
 
-#Day of Draft
+#Day of Draft  ** need to pudate data sim if I'm going to use this to ensure I'm not eliminating
+#players who really should be included
+
 removedPlayers <-
   draftData[rowSums(is.na(draftData[, c("points", "simulation", "risk", "inflatedCost"), with =
                                       FALSE])) == 0, ]
